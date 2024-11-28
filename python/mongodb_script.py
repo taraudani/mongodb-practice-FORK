@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
-from pymongo import MongoClient, errors
+from pymongo import MongoClient
 from bson.json_util import dumps
 import os
 from db import *
 from pymongo.server_api import ServerApi
 
-uri = "mongodb+srv://taraudani:<db_password>@cluster0.nr0mo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
-client = MongoClient(uri, server_api=ServerApi('1'))
+uri = "mongodb+srv://taraudani@cluster0.nr0mo.mongodb.net/hav7tz?retryWrites=true&w=majority&appName=Cluster0"
+password = os.getenv('MONGOPASS')
+client = MongoClient(uri, username='taraudani', password= password, connectTimeoutMS=200, retryWrites=True)
 
 db = client["hav7tz"]
-
 collection = db["characters"]
 
 characters_data = [
@@ -28,8 +27,6 @@ query = {"hair color": "black"}
 
 characters_cursor = collection.find(query).limit(3)
 
-print("Displaying 3 documents where hair color is black:")
 for character in characters_cursor:
     print(character)
 
-client.close()
